@@ -1,0 +1,54 @@
+<div class="customcss">
+	<section>
+		<h2>Translation test</h2>
+
+		<p>See problem description in <a href="https://www.drupal.org/node/2472731">t() variable placeholders not appearing to work in Twig &#x7B;&#x7B; trans &#x7D;&#x7D;</a></p>
+
+		{% set strings = ['Set up translations', '&"<>'] %}
+		{% for string in strings %}
+			string = '{{ string }}'
+			<ol>		
+				<li>
+				    &#x7B;&#x7B; string|t &#x7D;&#x7D; ⇒ {{ string|t }}
+				</li>
+				<li>
+				    &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; ⇒ {{ string|passthrough }}
+				</li>
+				<li>
+				    &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; ⇒ {{ string|placeholder }}
+				</li>
+				<li>
+				  {% trans %}
+				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string }}
+				  {% endtrans %}
+				</li>
+				<li>
+				  {% trans %}
+				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|t &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|t }}
+				  {% endtrans %}
+				</li>
+				<li>
+				  {% trans %}
+				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|passthrough }}
+				  {% endtrans %}
+				</li>
+				<li>
+				  {% trans %}
+				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|placeholder }}
+				  {% endtrans %}
+				</li>
+			</ol>		
+		{% endfor %}
+
+		{% for count in 0..3 %}	{# includes 0 and 3 #}
+			<p>
+			{% trans %}
+			  {{ count }} thingy.
+			{% plural count %}
+			  {{ count }} thingies.
+			{% endtrans %}
+			</p>
+		{% endfor %}
+	</section>
+
+</div>

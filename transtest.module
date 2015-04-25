@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Contains transtest.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function transtest_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the transtest module.
+    case 'help.page.transtest':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Test module for translation within trans block of Twig file') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function transtest_theme() {
+  return [
+    'transtest' => [
+      'variables' => [
+        'attributes' => [],
+      ],
+    ],
+  ];
+}

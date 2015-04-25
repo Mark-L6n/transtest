@@ -1,0 +1,6 @@
+name: Trans Test
+type: module
+description: Test module for translation within trans block of Twig file
+core: 8.x
+package: Tests
+

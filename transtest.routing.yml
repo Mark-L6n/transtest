@@ -1,0 +1,8 @@
+transtest.transtest_controller_testit:
+  path: '/trans-test'
+  defaults:
+    _controller: '\Drupal\transtest\Controller\TranstestController::testit'
+    _title: 'Trans Test'
+  requirements:
+    _permission: 'access content'
+

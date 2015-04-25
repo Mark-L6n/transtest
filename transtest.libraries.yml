@@ -1,0 +1,6 @@
+mycustom:
+  version: 0.1
+  css:
+    theme:
+      css/mycustom.css: {}
+  js:
