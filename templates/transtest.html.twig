@@ -3,43 +3,98 @@
 		<h2>Translation test</h2>
 
 		<p>See problem description in <a href="https://www.drupal.org/node/2472731">t() variable placeholders not appearing to work in Twig &#x7B;&#x7B; trans &#x7D;&#x7D;</a></p>
+		<p>Data shown in 'expected' is for page <code>[path/to/drupal]/es/trans-test</code>.  For author, 1) translates as expected, but not 4), 6) & 7).  (The rest, 2, 3) and 4) are not documented to work and do not translate.)</p>
 
-		{% set strings = ['Set up translations', '&"<>'] %}
-		{% for string in strings %}
-			string = '{{ string }}'
-			<ol>		
-				<li>
-				    &#x7B;&#x7B; string|t &#x7D;&#x7D; ⇒ {{ string|t }}
-				</li>
-				<li>
-				    &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; ⇒ {{ string|passthrough }}
-				</li>
-				<li>
-				    &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; ⇒ {{ string|placeholder }}
-				</li>
-				<li>
-				  {% trans %}
-				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string }}
-				  {% endtrans %}
-				</li>
-				<li>
-				  {% trans %}
-				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|t &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|t }}
-				  {% endtrans %}
-				</li>
-				<li>
-				  {% trans %}
-				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|passthrough }}
-				  {% endtrans %}
-				</li>
-				<li>
-				  {% trans %}
-				    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|placeholder }}
-				  {% endtrans %}
-				</li>
-			</ol>		
-		{% endfor %}
+		<h3>Testing translation of 'Set up translations' to 'Configurar traducciones'</h3>
+		{% set string = 'Set up translations' %}
+		<ol>		
+			<li>
+			    &#x7B;&#x7B; string|t &#x7D;&#x7D; ⇒ {{ string|t }} <br />
+				expected:  Configurar traducciones
+			</li>
+			<li>
+			    &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; ⇒ {{ string|passthrough }} <br />
+				expected:  [not documented, no translation expected]
+			</li>
+			<li>
+			    &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; ⇒ {{ string|placeholder }} <br />
+				expected:  [not documented, no translation expected]
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string }}
+			  {% endtrans %} <br />
+			  expected:  Configurar traducciones
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|t &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|t }}
+			  {% endtrans %} <br />
+			  expected:  [t in <code>&#x7B;% trans %&#x7D;</code> undocumented, unclear whether translation expected]
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|passthrough }}
+			  {% endtrans %} <br />
+			  expected:  Configurar traducciones
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|placeholder }}
+			  {% endtrans %} <br />
+			  expected:  <em class="placeholder">Configurar traducciones</em>
+			</li>
+		</ol>		
 
+		<h3>Testing HTML 'escaping' (converting to HTML entities) with string &"<>   ⇒ &#x26;amp;&#x26;quot;&#x26;lt;&#x26;gt;</h3>
+		Need to look at source code to evaluate, which is a little difficult:  look after  ⇒  in correct section.
+		Not sure what is expected in all cases, so 'expected' is not listed.  However, encounter strange behavior: 1, 2 & 4 are identical.
+		In author's test, 1) and 2) are converted to entities, but identical 4) is not, nor are any of the other examples.
+		So appears that something is happening to the variable containing &"<> after it is used with t filter.
+		{% set string = '&"<>' %}
+		<ol>		
+			<li>
+			    &#x7B;&#x7B; string &#x7D;&#x7D; ⇒ {{ string }}
+			</li>
+			<li>
+			    &#x7B;&#x7B; string &#x7D;&#x7D; ⇒ {{ string }}
+			</li>
+			<li>
+			    &#x7B;&#x7B; string|t &#x7D;&#x7D; ⇒ {{ string|t }}
+			</li>
+			<li>
+			    &#x7B;&#x7B; string &#x7D;&#x7D; ⇒ {{ string }}
+			</li>
+			<li>
+			    &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; ⇒ {{ string|passthrough }}
+			</li>
+			<li>
+			    &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; ⇒ {{ string|placeholder }}
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string }}
+			  {% endtrans %}
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|t &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|t }}
+			  {% endtrans %}
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|passthrough &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|passthrough }}
+			  {% endtrans %}
+			</li>
+			<li>
+			  {% trans %}
+			    &#x7B;% trans %&#x7D; &#x7B;&#x7B; string|placeholder &#x7D;&#x7D; &#x7B;% endtrans %&#x7D; ⇒ {{ string|placeholder }}
+			  {% endtrans %}
+			</li>
+		</ol>		
+
+		<h3>Testing singular/plural within a <code>&#x7B;% trans %&#x7D;</code> block</h3>
+		For author, all work correctly.
 		{% for count in 0..3 %}	{# includes 0 and 3 #}
 			<p>
 			{% trans %}
@@ -49,6 +104,7 @@
 			{% endtrans %}
 			</p>
 		{% endfor %}
+		expected: 0 thingies.  1 thingy.  2 thingies.   3 thingies.
 	</section>
 
 </div>
