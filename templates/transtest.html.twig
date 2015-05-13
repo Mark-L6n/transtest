@@ -50,7 +50,8 @@
 		Need to look at source code to evaluate, which is a little difficult:  look after  ⇒  in correct section.
 		Not sure what is expected in all cases, so 'expected' is not listed.  However, encounter strange behavior: 1, 2 & 4 are identical.
 		In author's test, 1) and 2) are converted to entities, but identical 4) is not, nor are any of the other examples.
-		So appears that something is happening to the variable containing &"<> after it is used with t filter.
+		So appears that something is happening to the variable containing &"<> after it is used with t filter. 
+		Furthermore, if 3) (that uses the t filter) is deleted, then 3 of the 4 trans block examples (7,8&10) escape the HTML.
 		{% set string = '&"<>' %}
 		<ol>		
 			<li>
